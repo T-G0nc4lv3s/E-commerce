@@ -5,11 +5,13 @@ import java.time.Instant;
 import com.ecommerce.store.domain.enums.PaymentStatus;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Entity
 public class PaymentWithCard extends Payment {
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")

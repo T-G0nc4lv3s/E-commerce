@@ -2,11 +2,13 @@ package com.ecommerce.store.domain;
 
 import com.ecommerce.store.domain.enums.PaymentStatus;
 
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Entity
 public class PaymentWithTiket extends Payment {
 
 	private Integer installment;
