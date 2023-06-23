@@ -48,3 +48,16 @@ INSERT INTO tb_state (name, acronym) VALUES ('Distrito Federal', 'DF');
 INSERT INTO tb_city(name, state_id) VALUES ('São Paulo', 24);
 INSERT INTO tb_city(name, state_id) VALUES ('Rio de Janeiro', 18);
 INSERT INTO tb_city(name, state_id) VALUES ('São João de Meriti', 18);
+
+INSERT INTO tb_client (name, email, cpf_or_cnpj, type) VALUES ('Alex Green', 'alex@gmail.com', '756.274.344-49', 'PHYSICAL_PERSON');
+INSERT INTO tb_client (name, email, cpf_or_cnpj, type) VALUES ('Martha Black', 'martha@gmail.com', '127.457.555-95', 'PHYSICAL_PERSON');
+INSERT INTO tb_client (name, email, cpf_or_cnpj, type) VALUES ('CarTop', 'cartop@gmail.com', '52.751.884/0001-10', 'LEGAL_PERSON');
+
+INSERT INTO tb_phones (client_id, phones) VALUES (1, '(66) 99711-4026');
+INSERT INTO tb_phones (client_id, phones) VALUES (2, '(21) 99771-4046');
+INSERT INTO tb_phones (client_id, phones) VALUES (3, '(87) 98874-5913');
+
+INSERT INTO tb_address(street, number, district, complement, zip_code, client_id, city_id) VALUES ('Beco do crime', 's/nº', 'Gothan', null, '11111111', 1, 1);
+INSERT INTO tb_address(street, number, district, complement, zip_code, client_id, city_id) VALUES ('Praça da Sé', 'S/Nº', 'Sé', null, '01001000', 1, 2);
+INSERT INTO tb_address(street, number, district, complement, zip_code, client_id, city_id) VALUES ('Rua Dona Júlia Cheven', 'S/Nº', 'São Mateus', null, '25520200', 2, 3);
+INSERT INTO tb_address(street, number, district, complement, zip_code, client_id, city_id) VALUES ('Santa Edwiges', 'S/Nº','Gotham', null, 'xxxxxxxx', 3, 3);
