@@ -1,10 +1,7 @@
 package com.ecommerce.store.domain;
 
-import java.time.Instant;
-
 import com.ecommerce.store.domain.enums.PaymentStatus;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,21 +11,15 @@ import lombok.Setter;
 @Entity
 public class PaymentWithCard extends Payment {
 
-	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-	private Instant dueDate;
-	
-	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-	private Instant payday;
+	private Integer installment;	
 
 	public PaymentWithCard() {
 		super();
 	}
 
-	public PaymentWithCard(Long id, PaymentStatus status, Order order, Instant dueDate, Instant payday) {
+	public PaymentWithCard(Long id, PaymentStatus status, Order order, Integer installment) {
 		super(id, status, order);
-		this.dueDate = dueDate;
-		this.payday = payday;
+		this.installment = installment;
 	}
-	
-	
+
 }
