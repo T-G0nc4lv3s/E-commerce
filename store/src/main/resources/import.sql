@@ -61,3 +61,4 @@ INSERT INTO tb_address(street, number, district, complement, zip_code, client_id
 INSERT INTO tb_address(street, number, district, complement, zip_code, client_id, city_id) VALUES ('Praça da Sé', 'S/Nº', 'Sé', null, '01001000', 1, 2);
 INSERT INTO tb_address(street, number, district, complement, zip_code, client_id, city_id) VALUES ('Rua Dona Júlia Cheven', 'S/Nº', 'São Mateus', null, '25520200', 2, 3);
 INSERT INTO tb_address(street, number, district, complement, zip_code, client_id, city_id) VALUES ('Santa Edwiges', 'S/Nº','Gotham', null, 'xxxxxxxx', 3, 3);
+

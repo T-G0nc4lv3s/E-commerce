@@ -8,15 +8,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -34,9 +34,20 @@ public class Order {
 	
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
 	private Payment payment;
-	/*
+	
+	@ManyToOne
+	@JoinColumn(name = "client_id") 
 	private Client client;
 	
+	@ManyToOne
+	@JoinColumn(name = "address_id")
 	private Address address;
-	*/
+
+	public Order(Long id, Instant date, Client client, Address address) {
+		this.id = id;
+		this.date = date;
+		this.client = client;
+		this.address = address;
+	}
+	
 }

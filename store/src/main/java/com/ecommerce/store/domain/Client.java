@@ -46,7 +46,8 @@ public class Client {
 	
 	@OneToMany(mappedBy = "client")
 	private Set<Address> addresses = new HashSet<>();
-	/*
+	
+	@OneToMany(mappedBy = "client")
 	private Set<Order> orders = new HashSet<>();
-	*/
+	
 }
