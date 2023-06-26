@@ -1,25 +1,16 @@
 package com.ecommerce.store;
 
-import java.time.Instant;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.ecommerce.store.domain.Order;
-import com.ecommerce.store.domain.OrderItem;
-import com.ecommerce.store.domain.Payment;
-import com.ecommerce.store.domain.PaymentWithCard;
-import com.ecommerce.store.domain.Product;
-import com.ecommerce.store.domain.enums.PaymentStatus;
-import com.ecommerce.store.service.OrderItemService;
-import com.ecommerce.store.service.OrderService;
-import com.ecommerce.store.service.ProductService;
+import com.ecommerce.store.service.CategoryService;
 
 @SpringBootApplication
 public class StoreApplication implements CommandLineRunner{
 
+	/*
 	@Autowired
 	private OrderService orderService;
 	
@@ -28,6 +19,10 @@ public class StoreApplication implements CommandLineRunner{
 	
 	@Autowired
 	private OrderItemService orderItemService;
+	*/
+	
+	@Autowired
+	private CategoryService categoryService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(StoreApplication.class, args);
@@ -35,7 +30,7 @@ public class StoreApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		
+		/*
 		Order order1 = new Order(null, Instant.parse("2022-12-03T10:15:30.00Z"), null, null);
 		
 		Payment payment1 = new PaymentWithCard(null, PaymentStatus.PENDING, order1, 6);
@@ -65,6 +60,9 @@ public class StoreApplication implements CommandLineRunner{
 		
 		orderItemService.saveOrderItem(orderItem1);
 		
+		*/
+		
+		System.out.println(categoryService.searchAll());
 	}
 
 }
