@@ -60,9 +60,11 @@ public class StoreApplication implements CommandLineRunner{
 		
 		orderItemService.saveOrderItem(orderItem1);
 		
-		*/
+		
 		
 		System.out.println(categoryService.searchAll());
+		
+		*/
 	}
 
 }

@@ -3,8 +3,6 @@ package com.ecommerce.store.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +12,7 @@ import com.ecommerce.store.domain.Category;
 import com.ecommerce.store.dto.CategoryDTO;
 import com.ecommerce.store.record.CategoryRecord;
 import com.ecommerce.store.repository.CategoryRepository;
+import com.ecommerce.store.service.exception.EntityNotFoundException;
 
 @Service
 public class CategoryService {
@@ -32,7 +31,7 @@ public class CategoryService {
 	@Transactional(readOnly = true)
 	public CategoryRecord findById(Long categoryId) {
 		Category result = categoryRepository.findById(categoryId)
-				.orElseThrow(() -> new RuntimeException("Entity not found"));
+				.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
 		return new CategoryRecord(result);
 	}
 
@@ -59,7 +58,7 @@ public class CategoryService {
 			categoryRepository.deleteById(categoryId);
 			
 		} catch (Error e) {
-			throw new RuntimeErrorException(e, "Resource not found");
+			throw new EntityNotFoundException(e.getMessage());
 		}
 		
 	}
