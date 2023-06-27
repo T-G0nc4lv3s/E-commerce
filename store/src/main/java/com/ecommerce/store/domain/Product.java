@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tb_product")
 public class Product {
-
+	
 	@Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +35,7 @@ public class Product {
 	private String name;
 	private Double price;
 	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(
 			name = "tb_product_category",
@@ -41,6 +44,7 @@ public class Product {
 			)
 	private Set<Category> categories = new HashSet<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.product")
 	private Set<OrderItem> itens = new HashSet<>();
 
