@@ -1,11 +1,8 @@
 package com.ecommerce.store;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.ecommerce.store.service.CategoryService;
 
 @SpringBootApplication
 public class StoreApplication implements CommandLineRunner{
@@ -20,9 +17,10 @@ public class StoreApplication implements CommandLineRunner{
 	@Autowired
 	private OrderItemService orderItemService;
 	*/
-	
+	/*
 	@Autowired
 	private CategoryService categoryService;
+	*/
 	
 	public static void main(String[] args) {
 		SpringApplication.run(StoreApplication.class, args);
