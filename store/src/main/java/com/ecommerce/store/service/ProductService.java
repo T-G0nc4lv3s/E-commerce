@@ -38,7 +38,7 @@ public class ProductService {
 	@Transactional
 	public ProductRecord saveProduct(ProductDTO dto) {
 		Product entity = new Product();
-		entity = Formatter.dtoToEntity(entity, dto);
+		entity = Formatter.dtoToProduct(entity, dto);
 		entity = productRepository.save(entity);
 		return new ProductRecord(entity);
 	}
@@ -56,7 +56,7 @@ public class ProductService {
 	public ProductRecord updateProduct(Long productId, ProductDTO dto) {
 		try {
 			Product entity = productRepository.getReferenceById(productId);
-			entity = Formatter.dtoToEntity(entity, dto);
+			entity = Formatter.dtoToProduct(entity, dto);
 			productRepository.save(entity);
 			return new ProductRecord(entity);
 		} catch (Exception e) {
