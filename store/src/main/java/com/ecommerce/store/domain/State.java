@@ -3,6 +3,8 @@ package com.ecommerce.store.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +32,7 @@ public class State {
 	private String name;
 	private String acronym;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "state")
 	private Set<City> cities = new HashSet<>();
 }
