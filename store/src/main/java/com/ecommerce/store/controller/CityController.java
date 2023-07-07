@@ -1,5 +1,6 @@
 package com.ecommerce.store.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecommerce.store.dto.CityDTO;
 import com.ecommerce.store.record.CityRecord;
@@ -39,7 +41,9 @@ public class CityController {
 	@PostMapping
 	public ResponseEntity<CityRecord> insertCity(@RequestBody CityDTO dto){
 		CityRecord response = cityService.insertCity(dto);
-		return ResponseEntity.ok(response);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("{/cityId}").buildAndExpand(response.id()).toUri();
+		return ResponseEntity.created(uri).body(response);
 	}
 	
 	@PutMapping(value = "/{cityId}")
