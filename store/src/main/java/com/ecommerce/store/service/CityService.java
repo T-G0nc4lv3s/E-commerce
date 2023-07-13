@@ -1,7 +1,7 @@
 package com.ecommerce.store.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.store.domain.City;
 import com.ecommerce.store.dto.CityDTO;
+import com.ecommerce.store.dto.CityMinDTO;
+import com.ecommerce.store.projections.CityMinProjection;
 import com.ecommerce.store.record.CityRecord;
 import com.ecommerce.store.repository.CityRepository;
 import com.ecommerce.store.service.exception.EntityNotFoundException;
@@ -27,12 +29,10 @@ public class CityService {
 		return new CityRecord(entity);
 	}
 	
-	@Transactional(readOnly = true)
-	public List<CityRecord> findAll() {
-		List<City> list = cityRepository.findAll();
-		List<CityRecord> result = new ArrayList<>();
-		list.forEach(x -> result.add(new CityRecord(x)));
-		return result;
+	@Transactional
+	public List<CityMinDTO> findAllClients(){
+		List<CityMinProjection> list = cityRepository.findAllCities();
+		return list.stream().map(item -> new CityMinDTO(item)).collect(Collectors.toList());
 	}
 	
 	@Transactional

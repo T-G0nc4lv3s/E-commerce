@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecommerce.store.dto.CityDTO;
+import com.ecommerce.store.dto.CityMinDTO;
 import com.ecommerce.store.record.CityRecord;
 import com.ecommerce.store.service.CityService;
 
@@ -33,8 +34,8 @@ public class CityController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<CityRecord>> findAll(){
-		List<CityRecord> response = cityService.findAll();
+	public ResponseEntity<List<CityMinDTO>> findAll(){
+		List<CityMinDTO> response = cityService.findAllClients();
 		return ResponseEntity.ok(response);
 	}
 	
