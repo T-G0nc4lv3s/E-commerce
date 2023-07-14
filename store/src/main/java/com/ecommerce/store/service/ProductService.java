@@ -1,7 +1,7 @@
 package com.ecommerce.store.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.store.domain.Product;
 import com.ecommerce.store.dto.ProductDTO;
+import com.ecommerce.store.dto.ProductMinDTO;
+import com.ecommerce.store.projections.ProductMinprojection;
 import com.ecommerce.store.record.ProductRecord;
 import com.ecommerce.store.repository.ProductRepository;
 import com.ecommerce.store.service.exception.EntityNotFoundException;
@@ -21,11 +23,9 @@ public class ProductService {
 	private ProductRepository productRepository;
 	
 	@Transactional(readOnly = true)
-	public List<ProductRecord> findAll(){
-		List<Product> list = productRepository.findAll();
-		List<ProductRecord> result = new ArrayList<>();
-		list.forEach(x -> result.add(new ProductRecord(x)));
-		return result;
+	public List<ProductMinDTO> findAll(){
+		List<ProductMinprojection> result = productRepository.findAllProducts();
+		return result.stream().map(item -> new ProductMinDTO(item)).collect(Collectors.toList());
 	}
 	
 	@Transactional(readOnly = true)

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecommerce.store.dto.ProductDTO;
+import com.ecommerce.store.dto.ProductMinDTO;
 import com.ecommerce.store.record.ProductRecord;
 import com.ecommerce.store.service.ProductService;
 
@@ -34,8 +35,8 @@ public class ProductController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<ProductRecord>> findAll(){
-		List<ProductRecord> response = productService.findAll();
+	public ResponseEntity<List<ProductMinDTO>> findAll(){
+		List<ProductMinDTO> response = productService.findAll();
 		return ResponseEntity.ok(response);
 	}
 	
