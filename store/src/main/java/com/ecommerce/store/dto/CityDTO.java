@@ -13,12 +13,11 @@ public class CityDTO {
 
 	private Long id;
 	private String name;
-	
-	private StateDTO stateDTO;
+	private String stateId;
 
 	public CityDTO(City entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
-		this.stateDTO = new StateDTO(entity.getState());
+		this.stateId = String.valueOf(entity.getState().getId());
 	}
 }
