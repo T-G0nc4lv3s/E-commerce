@@ -29,10 +29,13 @@ public class ProductService {
 	}
 	
 	@Transactional(readOnly = true)
-	public ProductRecord findById(Long productId) {
-		Product entity = productRepository.findById(productId)
-				.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
-		return new ProductRecord(entity);
+	public ProductMinDTO findById(Long productId) {
+		try {
+			ProductMinprojection projection = productRepository.findByProductId(productId);
+			return new ProductMinDTO(projection);
+		} catch (Exception e) {
+			throw new EntityNotFoundException("Entity not found");
+		}
 	}
 	
 	@Transactional

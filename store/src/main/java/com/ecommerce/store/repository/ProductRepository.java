@@ -18,4 +18,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 					)
 	public List<ProductMinprojection> findAllProducts();
 	
+	@Query(nativeQuery = true,
+			value = "SELECT * "
+					+ "FROM TB_PRODUCT "
+					+ "WHERE tb_product.id = :productId")
+	public ProductMinprojection findByProductId(Long productId);
+	
 }
