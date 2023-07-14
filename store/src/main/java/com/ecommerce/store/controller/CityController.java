@@ -17,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecommerce.store.dto.CityDTO;
 import com.ecommerce.store.dto.CityMinDTO;
-import com.ecommerce.store.record.CityRecord;
 import com.ecommerce.store.service.CityService;
 
 @RestController
@@ -28,8 +27,8 @@ public class CityController {
 	private CityService cityService;
 	
 	@GetMapping(value = "/{cityId}")
-	public ResponseEntity<CityRecord> findById(@PathVariable Long cityId){
-		CityRecord response = cityService.findById(cityId);
+	public ResponseEntity<CityMinDTO> findById(@PathVariable Long cityId){
+		CityMinDTO response = cityService.findById(cityId);
 		return ResponseEntity.ok(response);
 	}
 	
@@ -40,16 +39,16 @@ public class CityController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<CityRecord> insertCity(@RequestBody CityDTO dto){
-		CityRecord response = cityService.insertCity(dto);
+	public ResponseEntity<CityMinDTO> insertCity(@RequestBody CityDTO dto){
+		CityMinDTO response = cityService.insertCity(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("{/cityId}").buildAndExpand(response.id()).toUri();
+				.path("{/cityId}").buildAndExpand(response.getId()).toUri();
 		return ResponseEntity.created(uri).body(response);
 	}
 	
 	@PutMapping(value = "/{cityId}")
-	public ResponseEntity<CityRecord> updateCity(@PathVariable Long cityId, @RequestBody CityDTO dto){
-		CityRecord response = cityService.updateCity(cityId, dto);
+	public ResponseEntity<CityMinDTO> updateCity(@PathVariable Long cityId, @RequestBody CityDTO dto){
+		CityMinDTO response = cityService.updateCity(cityId, dto);
 		return ResponseEntity.ok(response);
 	}
 	

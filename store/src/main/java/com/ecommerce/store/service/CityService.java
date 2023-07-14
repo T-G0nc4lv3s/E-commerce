@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.store.domain.City;
+import com.ecommerce.store.domain.State;
 import com.ecommerce.store.dto.CityDTO;
 import com.ecommerce.store.dto.CityMinDTO;
 import com.ecommerce.store.projections.CityMinProjection;
-import com.ecommerce.store.record.CityRecord;
 import com.ecommerce.store.repository.CityRepository;
+import com.ecommerce.store.repository.StateRepository;
 import com.ecommerce.store.service.exception.EntityNotFoundException;
 
 @Service
@@ -22,11 +23,14 @@ public class CityService {
 	@Autowired
 	private CityRepository cityRepository;
 	
+	@Autowired
+	private StateRepository stateRepository;
+	
 	@Transactional(readOnly = true)
-	public CityRecord findById(Long cityId) {
+	public CityMinDTO findById(Long cityId) {
 		City entity = cityRepository.findById(cityId)
 				.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
-		return new CityRecord(entity);
+		return new CityMinDTO(entity);
 	}
 	
 	@Transactional
@@ -45,24 +49,37 @@ public class CityService {
 	}
 	
 	@Transactional
-	public CityRecord insertCity(CityDTO dto) {
-		City entity = new City();
-		BeanUtils.copyProperties(dto, entity);
-		entity = cityRepository.save(entity);
-		return new CityRecord(entity);
+	public CityMinDTO insertCity(CityDTO dto) {
+		try {
+			City entity = new City();
+			entity = dtoToCity(entity, dto);
+			entity = cityRepository.save(entity);
+			return new CityMinDTO(entity);
+		} catch (Exception e) {
+			throw new EntityNotFoundException("entity not found");
+		}
+		
 	}
 	
 	@Transactional
-	public CityRecord updateCity(Long cityId, CityDTO dto) {
+	public CityMinDTO updateCity(Long cityId, CityDTO dto) {
 		
 		try {
 			City entity = cityRepository.getReferenceById(cityId);
-			dto.setId(cityId);
-			BeanUtils.copyProperties(dto, entity);
+			entity = dtoToCity(entity, dto);
+			entity.setId(cityId);
 			entity = cityRepository.save(entity);
-			return new CityRecord(entity);
+			return new CityMinDTO(entity);
 		} catch (Exception e) {
 			throw new EntityNotFoundException("Id not found");
 		}
 	}
+	
+	private City dtoToCity(City city, CityDTO cityDTO) throws Exception{
+		BeanUtils.copyProperties(cityDTO, city);
+		State state = stateRepository.getReferenceById(Long.valueOf(cityDTO.getStateId()));
+		city.setState(state);
+		return city;
+	}
+	
 }
