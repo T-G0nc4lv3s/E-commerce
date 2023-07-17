@@ -17,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecommerce.store.dto.ProductDTO;
 import com.ecommerce.store.dto.ProductMinDTO;
-import com.ecommerce.store.record.ProductRecord;
 import com.ecommerce.store.service.ProductService;
 
 @RestController
@@ -41,10 +40,10 @@ public class ProductController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProductRecord> insertProduct(@RequestBody ProductDTO dto){
-		ProductRecord response = productService.saveProduct(dto);
+	public ResponseEntity<ProductMinDTO> insertProduct(@RequestBody ProductDTO dto){
+		ProductMinDTO response = productService.saveProduct(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{productId}").buildAndExpand(response.id()).toUri();
+				.path("/{productId}").buildAndExpand(response.getId()).toUri();
 		return ResponseEntity.created(uri).body(response);
 	}
 	
@@ -55,8 +54,8 @@ public class ProductController {
 	}
 	
 	@PutMapping(value = "/{productId}")
-	public ResponseEntity<ProductRecord> updateProduct(@PathVariable Long productId, @RequestBody ProductDTO dto){
-		ProductRecord response = productService.updateProduct(productId, dto);
+	public ResponseEntity<ProductMinDTO> updateProduct(@PathVariable Long productId, @RequestBody ProductDTO dto){
+		ProductMinDTO response = productService.updateProduct(productId, dto);
 		return ResponseEntity.ok(response);
 	}
 }

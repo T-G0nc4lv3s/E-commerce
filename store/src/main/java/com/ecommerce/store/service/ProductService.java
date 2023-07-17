@@ -11,7 +11,6 @@ import com.ecommerce.store.domain.Product;
 import com.ecommerce.store.dto.ProductDTO;
 import com.ecommerce.store.dto.ProductMinDTO;
 import com.ecommerce.store.projections.ProductMinprojection;
-import com.ecommerce.store.record.ProductRecord;
 import com.ecommerce.store.repository.ProductRepository;
 import com.ecommerce.store.service.exception.EntityNotFoundException;
 import com.ecommerce.store.util.Formatter;
@@ -39,11 +38,11 @@ public class ProductService {
 	}
 	
 	@Transactional
-	public ProductRecord saveProduct(ProductDTO dto) {
+	public ProductMinDTO saveProduct(ProductDTO dto) {
 		Product entity = new Product();
 		entity = Formatter.dtoToProduct(entity, dto);
 		entity = productRepository.save(entity);
-		return new ProductRecord(entity);
+		return new ProductMinDTO(entity);
 	}
 	
 	@Transactional
@@ -56,12 +55,12 @@ public class ProductService {
 	}
 	
 	@Transactional
-	public ProductRecord updateProduct(Long productId, ProductDTO dto) {
+	public ProductMinDTO updateProduct(Long productId, ProductDTO dto) {
 		try {
 			Product entity = productRepository.getReferenceById(productId);
 			entity = Formatter.dtoToProduct(entity, dto);
 			productRepository.save(entity);
-			return new ProductRecord(entity);
+			return new ProductMinDTO(entity);
 		} catch (Exception e) {
 			throw new EntityNotFoundException(e.getMessage());
 		}

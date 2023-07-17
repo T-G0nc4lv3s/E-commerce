@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.store.domain.State;
 import com.ecommerce.store.dto.StateDTO;
-import com.ecommerce.store.record.StateRecord;
 import com.ecommerce.store.repository.StateRepository;
 import com.ecommerce.store.service.exception.EntityNotFoundException;
 import com.ecommerce.store.util.Formatter;
@@ -22,24 +21,24 @@ public class StateService {
 	private StateRepository stateRepository;
 	
 	@Transactional(readOnly = true)
-	public List<StateRecord> findAll(){
+	public List<StateDTO> findAll(){
 		List<State> list = stateRepository.findAll();
-		List<StateRecord> result = new ArrayList<>();
-		list.forEach(x -> result.add(new StateRecord(x)));
+		List<StateDTO> result = new ArrayList<>();
+		list.forEach(x -> result.add(new StateDTO(x)));
 		return result;
 	}
 	
 	@Transactional(readOnly = true)
-	public StateRecord findById(Long stateId){
+	public StateDTO findById(Long stateId){
 		State entity = stateRepository.findById(stateId)
 				.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
-		return new StateRecord(entity);
+		return new StateDTO(entity);
 	}
 	
 	@Transactional
-	public StateRecord insertState(StateDTO dto) {
+	public StateDTO insertState(StateDTO dto) {
 		State entiy = stateRepository.save(Formatter.stateInstance(dto));
-		return new StateRecord(entiy);
+		return new StateDTO(entiy);
 	}
 	
 	@Transactional
@@ -52,13 +51,13 @@ public class StateService {
 	}
 	
 	@Transactional
-	public StateRecord updateState(Long stateId, StateDTO dto) {
+	public StateDTO updateState(Long stateId, StateDTO dto) {
 		try {
 			State entity = stateRepository.getReferenceById(stateId);
 			dto.setId(stateId);
 			BeanUtils.copyProperties(dto, entity);
 			entity = stateRepository.save(entity);
-			return new StateRecord(entity);
+			return new StateDTO(entity);
 			
 		} catch (Exception e) {
 			throw new EntityNotFoundException("Entity not found");

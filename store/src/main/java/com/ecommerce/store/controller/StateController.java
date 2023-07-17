@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecommerce.store.dto.StateDTO;
-import com.ecommerce.store.record.StateRecord;
 import com.ecommerce.store.service.StateService;
 
 @RestController
@@ -27,22 +26,22 @@ public class StateController {
 	private StateService stateService;
 	
 	@GetMapping
-	public ResponseEntity<List<StateRecord>> findall(){
-		List<StateRecord> response = stateService.findAll();
+	public ResponseEntity<List<StateDTO>> findall(){
+		List<StateDTO> response = stateService.findAll();
 		return ResponseEntity.ok(response);
 	}
 	
 	@GetMapping(value = "/{stateId}")
-	public ResponseEntity<StateRecord> findById(@PathVariable Long stateId){
-		StateRecord response = stateService.findById(stateId);
+	public ResponseEntity<StateDTO> findById(@PathVariable Long stateId){
+		StateDTO response = stateService.findById(stateId);
 		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping
-	public ResponseEntity<StateRecord> insertState(@RequestBody StateDTO dto){
-		StateRecord response = stateService.insertState(dto);
+	public ResponseEntity<StateDTO> insertState(@RequestBody StateDTO dto){
+		StateDTO response = stateService.insertState(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{stateId}").buildAndExpand(response.id()).toUri();
+				.path("/{stateId}").buildAndExpand(response.getId()).toUri();
 		return ResponseEntity.created(uri).body(response);
 	}
 	
@@ -53,10 +52,8 @@ public class StateController {
 	}
 	
 	@PutMapping(value = "/{stateId}")
-	public ResponseEntity<StateRecord> updateState(@PathVariable Long stateId, @RequestBody StateDTO dto){
-		StateRecord response = stateService.updateState(stateId, dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{stateId}").buildAndExpand(response.id()).toUri();
-		return ResponseEntity.created(uri).body(response);
+	public ResponseEntity<StateDTO> updateState(@PathVariable Long stateId, @RequestBody StateDTO dto){
+		StateDTO response = stateService.updateState(stateId, dto);
+		return ResponseEntity.ok(response);
 	}
 }

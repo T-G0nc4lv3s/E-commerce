@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.store.domain.Category;
 import com.ecommerce.store.dto.CategoryDTO;
-import com.ecommerce.store.record.CategoryRecord;
 import com.ecommerce.store.repository.CategoryRepository;
 import com.ecommerce.store.service.exception.EntityNotFoundException;
 
@@ -21,34 +20,34 @@ public class CategoryService {
 	private CategoryRepository categoryRepository;
 
 	@Transactional(readOnly = true)
-	public List<CategoryRecord> searchAll() {
+	public List<CategoryDTO> searchAll() {
 		List<Category> list = categoryRepository.findAll();
-		List<CategoryRecord> result = new ArrayList<>();
-		list.forEach(x -> result.add(new CategoryRecord(x)));
+		List<CategoryDTO> result = new ArrayList<>();
+		list.forEach(x -> result.add(new CategoryDTO(x)));
 		return result;
 	}
 
 	@Transactional(readOnly = true)
-	public CategoryRecord findById(Long categoryId) {
+	public CategoryDTO findById(Long categoryId) {
 		Category result = categoryRepository.findById(categoryId)
 				.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
-		return new CategoryRecord(result);
+		return new CategoryDTO(result);
 	}
 
 	@Transactional(readOnly = false)
-	public CategoryRecord insertCategory(CategoryDTO dto) {
+	public CategoryDTO insertCategory(CategoryDTO dto) {
 		Category entity = new Category();
 		BeanUtils.copyProperties(dto, entity);
 		entity = categoryRepository.save(entity);
-		return new CategoryRecord(entity);
+		return new CategoryDTO(entity);
 	}
 
 	@Transactional
-	public CategoryRecord updateCategory(Long categoryId, CategoryDTO dto) {
+	public CategoryDTO updateCategory(Long categoryId, CategoryDTO dto) {
 		Category entity = categoryRepository.getReferenceById(categoryId);
 		BeanUtils.copyProperties(dto, entity);
 		entity = categoryRepository.save(entity);
-		return new CategoryRecord(entity);
+		return new CategoryDTO(entity);
 	}
 
 	@Transactional

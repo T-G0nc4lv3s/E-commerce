@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecommerce.store.dto.CategoryDTO;
-import com.ecommerce.store.record.CategoryRecord;
 import com.ecommerce.store.service.CategoryService;
 
 @RestController
@@ -27,28 +26,28 @@ public class CategoryController {
 	private CategoryService categoryService;
 	
 	@GetMapping
-	public ResponseEntity<List<CategoryRecord>> findAll(){
-		List<CategoryRecord> result = categoryService.searchAll();
+	public ResponseEntity<List<CategoryDTO>> findAll(){
+		List<CategoryDTO> result = categoryService.searchAll();
 		return ResponseEntity.ok(result);
 	}
 	
 	@GetMapping(value = "/{categoryId}")
-	public ResponseEntity<CategoryRecord> finById(@PathVariable Long categoryId){
-		CategoryRecord result = categoryService.findById(categoryId);
+	public ResponseEntity<CategoryDTO> finById(@PathVariable Long categoryId){
+		CategoryDTO result = categoryService.findById(categoryId);
 		return ResponseEntity.ok(result);
 	}
 	
 	@PostMapping
-	public ResponseEntity<CategoryRecord> insertCategory(@RequestBody CategoryDTO dto){
-		CategoryRecord result = categoryService.insertCategory(dto);
+	public ResponseEntity<CategoryDTO> insertCategory(@RequestBody CategoryDTO dto){
+		CategoryDTO result = categoryService.insertCategory(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("{/categoryId}").buildAndExpand(result.id()).toUri();
+				.path("{/categoryId}").buildAndExpand(result.getId()).toUri();
 		return ResponseEntity.created(uri).body(result);	
 	}
 	
 	@PutMapping(value = "/{categoryId}")
-	public ResponseEntity<CategoryRecord> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDTO dto){
-		CategoryRecord result = categoryService.updateCategory(categoryId, dto);
+	public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDTO dto){
+		CategoryDTO result = categoryService.updateCategory(categoryId, dto);
 		return ResponseEntity.ok(result);
 	}
 	
