@@ -18,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ecommerce.store.dto.CategoryDTO;
 import com.ecommerce.store.service.CategoryService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryController {
@@ -38,7 +40,7 @@ public class CategoryController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<CategoryDTO> insertCategory(@RequestBody CategoryDTO dto){
+	public ResponseEntity<CategoryDTO> insertCategory(@Valid @RequestBody CategoryDTO dto){
 		CategoryDTO result = categoryService.insertCategory(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("{/categoryId}").buildAndExpand(result.getId()).toUri();
@@ -46,7 +48,7 @@ public class CategoryController {
 	}
 	
 	@PutMapping(value = "/{categoryId}")
-	public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDTO dto){
+	public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId, @Valid @RequestBody CategoryDTO dto){
 		CategoryDTO result = categoryService.updateCategory(categoryId, dto);
 		return ResponseEntity.ok(result);
 	}
