@@ -15,6 +15,7 @@ import com.ecommerce.store.dto.CategoryDTO;
 import com.ecommerce.store.repository.CategoryRepository;
 import com.ecommerce.store.service.exception.DatabaseException;
 import com.ecommerce.store.service.exception.EntityNotFoundException;
+import com.ecommerce.store.util.Formatter;
 
 @Service
 public class CategoryService {
@@ -37,8 +38,7 @@ public class CategoryService {
 
 	@Transactional(readOnly = false)
 	public CategoryDTO insertCategory(CategoryDTO dto) {
-		Category entity = new Category();
-		BeanUtils.copyProperties(dto, entity);
+		Category entity = Formatter.categoryInstance(dto);
 		entity = categoryRepository.save(entity);
 		return new CategoryDTO(entity);
 	}
