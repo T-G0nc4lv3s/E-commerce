@@ -10,13 +10,20 @@ import com.ecommerce.store.projections.ProductMinprojection;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+	/*
 	@Query(nativeQuery = true,
-			value = "SELECT DISTINCT (tb_product.id), (tb_product.name), (tb_product.price) "
+			value = "SELECT DISTINCT * "
 					+ "FROM TB_PRODUCT "
 					+ "INNER JOIN tb_product_category ON tb_product.id = tb_product_category.product_id "
 					+ "INNER JOIN tb_category ON tb_category.id = tb_product_category.category_id "
 					)
 	public List<ProductMinprojection> findAllProducts();
+	*/
+	
+	@Query("SELECT DISTINCT prod "
+			+"FROM Product prod "
+			+"JOIN FETCH prod.categories")
+	public List<Product> findAllProducts();
 	
 	@Query(nativeQuery = true,
 			value = "SELECT * "

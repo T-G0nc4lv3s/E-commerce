@@ -35,7 +35,6 @@ public class Product {
 	private String name;
 	private Double price;
 	
-	@JsonIgnore
 	@ManyToMany
 	@JoinTable(
 			name = "tb_product_category",

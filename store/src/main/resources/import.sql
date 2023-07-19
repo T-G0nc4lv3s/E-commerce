@@ -1,11 +1,11 @@
-INSERT INTO tb_category (name) VALUES ('Roupas');
-INSERT INTO tb_category (name) VALUES ('Calçados');
-INSERT INTO tb_category (name) VALUES ('Livros');
-INSERT INTO tb_category (name) VALUES ('Eletrônicos');
-INSERT INTO tb_category (name) VALUES ('Celulares');
-INSERT INTO tb_category (name) VALUES ('Computadores');
-INSERT INTO tb_category (name) VALUES ('Móveis');
-INSERT INTO tb_category (name) VALUES ('Veículos');
+INSERT INTO tb_category (category_name) VALUES ('Roupas');
+INSERT INTO tb_category (category_name) VALUES ('Calçados');
+INSERT INTO tb_category (category_name) VALUES ('Livros');
+INSERT INTO tb_category (category_name) VALUES ('Eletrônicos');
+INSERT INTO tb_category (category_name) VALUES ('Celulares');
+INSERT INTO tb_category (category_name) VALUES ('Computadores');
+INSERT INTO tb_category (category_name) VALUES ('Móveis');
+INSERT INTO tb_category (category_name) VALUES ('Veículos');
 
 
 INSERT INTO tb_product (name, price) VALUES ('IPhone X PRO', 8000.0);

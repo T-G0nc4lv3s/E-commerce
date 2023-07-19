@@ -22,9 +22,10 @@ public class ProductService {
 	private ProductRepository productRepository;
 	
 	@Transactional(readOnly = true)
-	public List<ProductMinDTO> findAll(){
-		List<ProductMinprojection> result = productRepository.findAllProducts();
-		return result.stream().map(item -> new ProductMinDTO(item)).collect(Collectors.toList());
+	public List<ProductDTO> findAll(){
+		List<Product> result = productRepository.findAllProducts();
+		return result.stream().map(item -> new ProductDTO(item, item.getCategories()))
+				.collect(Collectors.toList());
 	}
 	
 	@Transactional(readOnly = true)
