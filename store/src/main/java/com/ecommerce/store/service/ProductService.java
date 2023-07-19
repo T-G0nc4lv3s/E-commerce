@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ecommerce.store.domain.Product;
 import com.ecommerce.store.dto.ProductDTO;
 import com.ecommerce.store.dto.ProductMinDTO;
-import com.ecommerce.store.projections.ProductMinprojection;
 import com.ecommerce.store.repository.ProductRepository;
 import com.ecommerce.store.service.exception.EntityNotFoundException;
 import com.ecommerce.store.util.Formatter;
@@ -29,10 +28,10 @@ public class ProductService {
 	}
 	
 	@Transactional(readOnly = true)
-	public ProductMinDTO findById(Long productId) {
+	public ProductDTO findById(Long productId) {
 		try {
-			ProductMinprojection projection = productRepository.findByProductId(productId);
-			return new ProductMinDTO(projection);
+			Product obj = productRepository.findByProductId(productId);
+			return new ProductDTO(obj, obj.getCategories());
 		} catch (Exception e) {
 			throw new EntityNotFoundException("Entity not found");
 		}

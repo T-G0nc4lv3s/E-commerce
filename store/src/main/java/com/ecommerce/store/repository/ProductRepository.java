@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.ecommerce.store.domain.Product;
-import com.ecommerce.store.projections.ProductMinprojection;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -25,10 +24,18 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 			+"JOIN FETCH prod.categories")
 	public List<Product> findAllProducts();
 	
+	/*
 	@Query(nativeQuery = true,
 			value = "SELECT * "
 					+ "FROM TB_PRODUCT "
 					+ "WHERE tb_product.id = :productId")
 	public ProductMinprojection findByProductId(Long productId);
+	*/
+	
+	@Query("SELECT prod "
+			+"FROM Product prod "
+			+"JOIN FETCH prod.categories "
+			+"WHERE prod.id = :productId")
+	public Product findByProductId(Long productId);
 	
 }
