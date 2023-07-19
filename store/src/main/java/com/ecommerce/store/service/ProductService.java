@@ -38,11 +38,11 @@ public class ProductService {
 	}
 	
 	@Transactional
-	public ProductMinDTO saveProduct(ProductDTO dto) {
+	public ProductDTO saveProduct(ProductDTO dto) {
 		Product entity = new Product();
-		entity = Formatter.dtoToProduct(entity, dto);
+		entity = Formatter.dtoToProduct(dto);
 		entity = productRepository.save(entity);
-		return new ProductMinDTO(entity);
+		return new ProductDTO(entity, entity.getCategories());
 	}
 	
 	@Transactional
@@ -58,7 +58,7 @@ public class ProductService {
 	public ProductMinDTO updateProduct(Long productId, ProductDTO dto) {
 		try {
 			Product entity = productRepository.getReferenceById(productId);
-			entity = Formatter.dtoToProduct(entity, dto);
+			entity = Formatter.dtoToProduct(dto);
 			productRepository.save(entity);
 			return new ProductMinDTO(entity);
 		} catch (Exception e) {

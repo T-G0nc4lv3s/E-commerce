@@ -1,8 +1,6 @@
 package com.ecommerce.store.domain;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,18 +63,15 @@ public class Product {
 		this.price = price;
 	}
 	
-	public void addCategory(Category category) {
-		categories.add(category);
-	}
-	
 	public void addOrderItem(OrderItem orderItem) {
 		itens.add(orderItem);
 	}
 	
+	/*
 	public List<Order> getOrders(){
 		List<Order> list = new ArrayList<>();
 		itens.forEach(item -> list.add(item.getOrder()));
 		return list;
 	}
-
+	*/
 }

@@ -12,10 +12,10 @@ import com.ecommerce.store.dto.StateDTO;
 public class Formatter {
 
 	
-	public static Product dtoToProduct(Product product, ProductDTO dto) {
-		product.setName(dto.getName());
-		product.setPrice(dto.getPrice());
-		dto.getCategories().forEach(x -> product.addCategory(Formatter.categoryInstance(x)));
+	public static Product dtoToProduct(ProductDTO dto) {
+		Product product = new Product();
+		BeanUtils.copyProperties(dto, product);
+		dto.getCategories().forEach(item -> product.getCategories().add(categoryInstance(item)));
 		return product;
 	}
 	
