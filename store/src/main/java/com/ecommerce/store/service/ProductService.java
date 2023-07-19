@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.store.domain.Product;
@@ -45,13 +46,17 @@ public class ProductService {
 		return new ProductDTO(entity, entity.getCategories());
 	}
 	
-	@Transactional
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public void deleteById(Long productId) {
+		if(!productRepository.existsById(productId)) {
+			throw new EntityNotFoundException("Id not found " + productId);
+		}
 		try {
 			productRepository.deleteById(productId);
 		} catch (IllegalArgumentException e) {
 			throw new EntityNotFoundException(e.getMessage());
 		}
+
 	}
 	
 	@Transactional
