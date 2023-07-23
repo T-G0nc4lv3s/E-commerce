@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ecommerce.store.domain.State;
 import com.ecommerce.store.dto.StateDTO;
 import com.ecommerce.store.repository.StateRepository;
-import com.ecommerce.store.service.exception.EntityNotFoundException;
+import com.ecommerce.store.service.exception.ResourceNotFoundException;
 import com.ecommerce.store.util.Formatter;
 
 @Service
@@ -31,7 +31,7 @@ public class StateService {
 	@Transactional(readOnly = true)
 	public StateDTO findById(Long stateId){
 		State entity = stateRepository.findById(stateId)
-				.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+				.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		return new StateDTO(entity);
 	}
 	
@@ -46,7 +46,7 @@ public class StateService {
 		try {
 			stateRepository.deleteById(stateId);
 		} catch (IllegalArgumentException e) {
-			throw new EntityNotFoundException(e.getMessage());
+			throw new ResourceNotFoundException(e.getMessage());
 		}
 	}
 	
@@ -60,7 +60,7 @@ public class StateService {
 			return new StateDTO(entity);
 			
 		} catch (Exception e) {
-			throw new EntityNotFoundException("Entity not found");
+			throw new ResourceNotFoundException("Entity not found");
 		}
 	}
 }

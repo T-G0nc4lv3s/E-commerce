@@ -12,7 +12,7 @@ import com.ecommerce.store.domain.Product;
 import com.ecommerce.store.dto.ProductDTO;
 import com.ecommerce.store.dto.ProductMinDTO;
 import com.ecommerce.store.repository.ProductRepository;
-import com.ecommerce.store.service.exception.EntityNotFoundException;
+import com.ecommerce.store.service.exception.ResourceNotFoundException;
 import com.ecommerce.store.util.Formatter;
 
 @Service
@@ -34,7 +34,7 @@ public class ProductService {
 			Product obj = productRepository.findByProductId(productId);
 			return new ProductDTO(obj, obj.getCategories());
 		} catch (Exception e) {
-			throw new EntityNotFoundException("Entity not found");
+			throw new ResourceNotFoundException("Entity not found");
 		}
 	}
 	
@@ -49,12 +49,12 @@ public class ProductService {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public void deleteById(Long productId) {
 		if(!productRepository.existsById(productId)) {
-			throw new EntityNotFoundException("Id not found " + productId);
+			throw new ResourceNotFoundException("Id not found " + productId);
 		}
 		try {
 			productRepository.deleteById(productId);
 		} catch (IllegalArgumentException e) {
-			throw new EntityNotFoundException(e.getMessage());
+			throw new ResourceNotFoundException(e.getMessage());
 		}
 
 	}
@@ -67,7 +67,7 @@ public class ProductService {
 			productRepository.save(entity);
 			return new ProductMinDTO(entity);
 		} catch (Exception e) {
-			throw new EntityNotFoundException(e.getMessage());
+			throw new ResourceNotFoundException(e.getMessage());
 		}
 	}
 }

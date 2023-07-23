@@ -17,7 +17,7 @@ import com.ecommerce.store.dto.ClientMinDTO;
 import com.ecommerce.store.projections.ClientMinProjection;
 import com.ecommerce.store.repository.AddressRepository;
 import com.ecommerce.store.repository.ClientRepository;
-import com.ecommerce.store.service.exception.EntityNotFoundException;
+import com.ecommerce.store.service.exception.ResourceNotFoundException;
 
 @Service
 public class ClientService {
@@ -36,7 +36,7 @@ public class ClientService {
 	
 	@Transactional(readOnly = true)
 	public ClientMinDTO findById(Long clientId) {
-		Client entity = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+		Client entity = clientRepository.findById(clientId).orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		return new ClientMinDTO(entity);
 	}
 	

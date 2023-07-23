@@ -17,7 +17,7 @@ import com.ecommerce.store.projections.AddressMinProjection;
 import com.ecommerce.store.repository.AddressRepository;
 import com.ecommerce.store.repository.CityRepository;
 import com.ecommerce.store.repository.ClientRepository;
-import com.ecommerce.store.service.exception.EntityNotFoundException;
+import com.ecommerce.store.service.exception.ResourceNotFoundException;
 
 @Service
 public class AddressService {
@@ -39,7 +39,7 @@ public class AddressService {
 	
 	@Transactional(readOnly = true)
 	public AddressMinDTO findById(Long addressId){
-		Address result = addressRepository.findById(addressId).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+		Address result = addressRepository.findById(addressId).orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		return new AddressMinDTO(result);
 	}
 	
@@ -51,7 +51,7 @@ public class AddressService {
 			obj = addressRepository.save(obj);
 			return new AddressMinDTO(obj);
 		} catch (Exception e) {
-			throw new EntityNotFoundException("Entity not found");
+			throw new ResourceNotFoundException("Entity not found");
 		}
 	}
 	
@@ -65,7 +65,7 @@ public class AddressService {
 			entity = addressRepository.save(entity);
 			return new AddressMinDTO(entity);
 		} catch (Exception e) {
-			throw new EntityNotFoundException("Entity not found");
+			throw new ResourceNotFoundException("Entity not found");
 		}
 		
 	}
@@ -75,7 +75,7 @@ public class AddressService {
 		try {
 			addressRepository.deleteById(addressId);
 		} catch (IllegalArgumentException e) {
-			throw new EntityNotFoundException("Entity not found");
+			throw new ResourceNotFoundException("Entity not found");
 		}
 	}
 	

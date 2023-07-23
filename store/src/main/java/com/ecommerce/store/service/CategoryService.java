@@ -14,7 +14,7 @@ import com.ecommerce.store.domain.Category;
 import com.ecommerce.store.dto.CategoryDTO;
 import com.ecommerce.store.repository.CategoryRepository;
 import com.ecommerce.store.service.exception.DatabaseException;
-import com.ecommerce.store.service.exception.EntityNotFoundException;
+import com.ecommerce.store.service.exception.ResourceNotFoundException;
 import com.ecommerce.store.util.Formatter;
 
 @Service
@@ -32,7 +32,7 @@ public class CategoryService {
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long categoryId) {
 		Category result = categoryRepository.findById(categoryId)
-				.orElseThrow(() -> new EntityNotFoundException("Id not found " + categoryId));
+				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + categoryId));
 		return new CategoryDTO(result);
 	}
 
@@ -54,7 +54,7 @@ public class CategoryService {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public void deleteById(Long categoryId) {
 		if(!categoryRepository.existsById(categoryId)) {
-			throw new EntityNotFoundException("Entity not found " + categoryId);
+			throw new ResourceNotFoundException("Entity not found " + categoryId);
 		}
 		try {
 			categoryRepository.deleteById(categoryId);
