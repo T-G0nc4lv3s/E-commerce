@@ -5,17 +5,19 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.store.domain.City;
 import com.ecommerce.store.domain.State;
 import com.ecommerce.store.dto.CityDTO;
 import com.ecommerce.store.dto.CityMinDTO;
-import com.ecommerce.store.projections.CityMinProjection;
 import com.ecommerce.store.repository.CityRepository;
 import com.ecommerce.store.repository.StateRepository;
-import com.ecommerce.store.service.exception.EntityNotFoundException;
+import com.ecommerce.store.service.exception.DatabaseException;
+import com.ecommerce.store.service.exception.ResourceNotFoundException;
 
 @Service
 public class CityService {
@@ -29,57 +31,69 @@ public class CityService {
 	@Transactional(readOnly = true)
 	public CityMinDTO findById(Long cityId) {
 		City entity = cityRepository.findById(cityId)
-				.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+				.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		return new CityMinDTO(entity);
 	}
 	
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<CityMinDTO> findAllClients(){
-		List<CityMinProjection> list = cityRepository.findAllCities();
+		List<City> list = cityRepository.findAllCities();
 		return list.stream().map(item -> new CityMinDTO(item)).collect(Collectors.toList());
 	}
 	
-	@Transactional
-	public void deleteCityById(Long cityId) {
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public void deleteById(Long cityId) {
+		if(!cityRepository.existsById(cityId)) {
+			throw new ResourceNotFoundException("City id not found " + String.valueOf(cityId));
+		}
+		
 		try {
 			cityRepository.deleteById(cityId);
-		} catch (IllegalArgumentException e) {
-			throw new EntityNotFoundException("Entity not found");
+			
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Integrity violation");
 		}
+		
 	}
 	
 	@Transactional
 	public CityMinDTO insertCity(CityDTO dto) {
-		try {
-			City entity = new City();
-			entity = dtoToCity(entity, dto);
-			entity = cityRepository.save(entity);
-			return new CityMinDTO(entity);
-		} catch (Exception e) {
-			throw new EntityNotFoundException("entity not found");
+		Long stateId = Long.valueOf(dto.getStateId());
+		State state = new State();
+		
+		City entity = new City();
+		BeanUtils.copyProperties(dto, entity);
+		
+		if(!stateRepository.existsById(stateId)) {
+			throw new DatabaseException("State id not found: " + dto.getStateId());
 		}
 		
+		state.setId(stateId);
+		entity.setState(state);
+		entity = cityRepository.save(entity);
+		return new CityMinDTO(entity);
 	}
 	
 	@Transactional
 	public CityMinDTO updateCity(Long cityId, CityDTO dto) {
+		Long stateId = Long.valueOf(dto.getStateId());
+		State state = new State();
+		
+		if(!stateRepository.existsById(stateId)) {
+			throw new DatabaseException("State id not found: " + dto.getStateId());
+		}
+		state.setId(stateId);
+		
 		
 		try {
-			City entity = cityRepository.getReferenceById(cityId);
-			entity = dtoToCity(entity, dto);
-			entity.setId(cityId);
-			entity = cityRepository.save(entity);
-			return new CityMinDTO(entity);
+			City city = cityRepository.getReferenceById(cityId);
+			BeanUtils.copyProperties(dto, city);
+			city.setState(state);
+			city.setId(cityId);
+			cityRepository.save(city);
+			return new CityMinDTO(city);
 		} catch (Exception e) {
-			throw new EntityNotFoundException("Id not found");
+			throw new ResourceNotFoundException("City not found id: " + String.valueOf(dto.getId()));
 		}
 	}
-	
-	private City dtoToCity(City city, CityDTO cityDTO) throws Exception{
-		BeanUtils.copyProperties(cityDTO, city);
-		State state = stateRepository.getReferenceById(Long.valueOf(cityDTO.getStateId()));
-		city.setState(state);
-		return city;
-	}
-	
 }
