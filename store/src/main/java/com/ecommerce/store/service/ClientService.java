@@ -11,12 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ecommerce.store.domain.Address;
 import com.ecommerce.store.domain.City;
 import com.ecommerce.store.domain.Client;
-import com.ecommerce.store.dto.ClientUpdateDTO;
 import com.ecommerce.store.dto.ClientInsertDTO;
 import com.ecommerce.store.dto.ClientMinDTO;
+import com.ecommerce.store.dto.ClientUpdateDTO;
 import com.ecommerce.store.projections.ClientMinProjection;
 import com.ecommerce.store.repository.AddressRepository;
+import com.ecommerce.store.repository.CityRepository;
 import com.ecommerce.store.repository.ClientRepository;
+import com.ecommerce.store.service.exception.DatabaseException;
 import com.ecommerce.store.service.exception.ResourceNotFoundException;
 
 @Service
@@ -27,6 +29,9 @@ public class ClientService {
 	
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	@Autowired
+	private CityRepository cityRepository;
 	
 	@Transactional(readOnly = true)
 	public List<ClientMinDTO> findAll(){
@@ -42,6 +47,11 @@ public class ClientService {
 	
 	@Transactional
 	public ClientMinDTO insertNewClient(ClientInsertDTO dto) {
+		Long cityId = Long.valueOf(dto.getCityId());
+		if(!cityRepository.existsById(cityId)) {
+			throw new DatabaseException("Integrity violation, city does not exists");
+		}
+		
 		Client entity = fromDTO(dto);
 		entity = clientRepository.save(entity);
 		
@@ -55,10 +65,16 @@ public class ClientService {
 
 	@Transactional
 	public ClientMinDTO updateClient(Long clientId, ClientUpdateDTO dto) {
-		Client entity = clientRepository.getReferenceById(clientId);
-		BeanUtils.copyProperties(dto, entity);
-		entity = clientRepository.save(entity);
-		return new ClientMinDTO(entity);
+		
+		try {
+			Client entity = clientRepository.getReferenceById(clientId);
+			BeanUtils.copyProperties(dto, entity);
+			entity = clientRepository.save(entity);
+			return new ClientMinDTO(entity);
+		} catch (Exception e) {
+			throw new ResourceNotFoundException("Client not found, id: " + String.valueOf(clientId));
+		}
+		
 	}
 	
 	private Client fromDTO(ClientInsertDTO dto) {
