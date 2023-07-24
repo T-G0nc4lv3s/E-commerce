@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecommerce.store.dto.AddressDTO;
-import com.ecommerce.store.dto.AddressMinDTO;
 import com.ecommerce.store.service.AddressService;
 
 @RestController
@@ -27,28 +26,28 @@ public class AddressController {
 	private AddressService addressService;
 	
 	@GetMapping
-	public ResponseEntity<List<AddressMinDTO>> findAll(){
-		List<AddressMinDTO> response = addressService.findAll();
+	public ResponseEntity<List<AddressDTO>> findAll(){
+		List<AddressDTO> response = addressService.findAll();
 		return ResponseEntity.ok(response);
 	}
 	
 	@GetMapping(value = "/{addressId}")
-	public ResponseEntity<AddressMinDTO> findById(@PathVariable Long addressId){
-		AddressMinDTO response = addressService.findById(addressId);
+	public ResponseEntity<AddressDTO> findById(@PathVariable Long addressId){
+		AddressDTO response = addressService.findById(addressId);
 		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping
-	public ResponseEntity<AddressMinDTO> insertAddress(@RequestBody AddressDTO dto){
-		AddressMinDTO response = addressService.insertAddress(dto);
+	public ResponseEntity<AddressDTO> insertAddress(@RequestBody AddressDTO dto){
+		AddressDTO response = addressService.insertAddress(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("{/addressId}").buildAndExpand(response.getId()).toUri();
 		return ResponseEntity.created(uri).body(response);
 	}
 	
 	@PutMapping(value = "/{addressId}")
-	public ResponseEntity<AddressMinDTO> updateAddress(@PathVariable Long addressId, @RequestBody AddressDTO dto){
-		AddressMinDTO response = addressService.updateAddress(addressId, dto);
+	public ResponseEntity<AddressDTO> updateAddress(@PathVariable Long addressId, @RequestBody AddressDTO dto){
+		AddressDTO response = addressService.updateAddress(addressId, dto);
 		return ResponseEntity.ok(response);
 	}
 	

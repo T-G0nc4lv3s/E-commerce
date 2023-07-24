@@ -31,4 +31,5 @@ public class Formatter {
 		BeanUtils.copyProperties(dto, state);
 		return state;
 	}
+
 }

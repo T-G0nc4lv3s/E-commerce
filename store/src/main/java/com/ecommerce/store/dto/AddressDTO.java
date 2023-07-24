@@ -3,6 +3,7 @@ package com.ecommerce.store.dto;
 import org.springframework.beans.BeanUtils;
 
 import com.ecommerce.store.domain.Address;
+import com.ecommerce.store.projections.AddressMinProjection;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,5 +29,14 @@ public class AddressDTO {
 		this.cityId = String.valueOf(entity.getCity().getId());
 	}
 	
-	
+	public AddressDTO(AddressMinProjection projection) {
+		this.id = projection.getId();
+		this.street = projection.getStreet();
+		this.complement = projection.getComplement();
+		this.number = projection.getNumber();
+		this.district = projection.getDistrict();
+		this.zipCode = projection.getZip_Code();
+		this.cityId = String.valueOf(projection.getCity_Id());
+		this.clientId = String.valueOf(projection.getClient_Id());
+	}
 }
