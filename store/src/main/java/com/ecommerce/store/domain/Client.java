@@ -6,6 +6,7 @@ import java.util.Set;
 import com.ecommerce.store.domain.enums.ClientType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -46,7 +47,7 @@ public class Client {
 	private Set<String> phones = new HashSet<>();
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "client")
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
 	private Set<Address> addresses = new HashSet<>();
 	
 	@JsonIgnore

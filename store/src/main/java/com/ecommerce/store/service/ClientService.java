@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.store.domain.Address;
@@ -75,6 +76,14 @@ public class ClientService {
 			throw new ResourceNotFoundException("Client not found, id: " + String.valueOf(clientId));
 		}
 		
+	}
+	
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public void deleteClientById(Long clientId) {
+		if(!clientRepository.existsById(clientId)) {
+			throw new ResourceNotFoundException("Client not found, id: " + String.valueOf(clientId));
+		}
+		clientRepository.deleteById(clientId);
 	}
 	
 	private Client fromDTO(ClientInsertDTO dto) {
