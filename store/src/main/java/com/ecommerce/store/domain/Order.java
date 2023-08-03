@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -67,6 +69,7 @@ public class Order {
 	}
 
 	public void setPayment(Payment payment) {
+		payment.setOrder(this);
 		this.payment = payment;
 	}
 
@@ -82,6 +85,7 @@ public class Order {
 		itens.add(orderItem);
 	}
 	
+	@JsonIgnore
 	public List<Product> getProducts(){
 		List<Product> list = new ArrayList<>();
 		itens.forEach(item -> list.add(item.getProduct()));

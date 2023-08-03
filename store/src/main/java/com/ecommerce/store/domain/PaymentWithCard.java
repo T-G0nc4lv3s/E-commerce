@@ -1,6 +1,7 @@
 package com.ecommerce.store.domain;
 
 import com.ecommerce.store.domain.enums.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "tb_payment_with_card")
+@JsonTypeName("paymentWithCard")
 public class PaymentWithCard extends Payment {
 
 	private Integer installment;	

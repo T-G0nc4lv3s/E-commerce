@@ -1,6 +1,9 @@
 package com.ecommerce.store.domain;
 
 import com.ecommerce.store.domain.enums.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,6 +28,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tb_payment")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.PROPERTY, property = "@type")
 public abstract class Payment {
 
 	@Include
@@ -34,8 +38,9 @@ public abstract class Payment {
 	@Enumerated(EnumType.STRING)
 	private PaymentStatus status;
 	
+	@JsonIgnore
 	@OneToOne
-	@JoinColumn(name = "order_id")
 	@MapsId
+	@JoinColumn(name = "order_id")
 	private Order order;
 }
