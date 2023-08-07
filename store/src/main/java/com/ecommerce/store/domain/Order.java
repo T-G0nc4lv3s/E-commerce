@@ -92,4 +92,11 @@ public class Order {
 		return list;
 	}
 
+	public Double getTotal() {
+		Double sum = 0.0;
+		for(OrderItem item :itens) {
+			sum += item.getSubtotal();
+		}
+		return sum;
+	}
 }
