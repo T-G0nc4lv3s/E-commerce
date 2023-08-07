@@ -14,7 +14,7 @@ public class TicketService {
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(instant.toEpochMilli());
 		cal.add(Calendar.DAY_OF_MONTH, 7);
-		payment.setPayday(Instant.ofEpochMilli(cal.getTimeInMillis()));
+		payment.setDueDate(Instant.ofEpochMilli(cal.getTimeInMillis()));
 	}
 
 	

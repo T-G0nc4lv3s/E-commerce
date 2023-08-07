@@ -11,9 +11,9 @@ import com.ecommerce.store.domain.Address;
 import com.ecommerce.store.domain.Client;
 import com.ecommerce.store.domain.Order;
 import com.ecommerce.store.domain.OrderItem;
-import com.ecommerce.store.domain.PaymentWithTicket;
-import com.ecommerce.store.domain.enums.PaymentStatus;
+import com.ecommerce.store.domain.Payment;
 import com.ecommerce.store.dto.OrderDTO;
+import com.ecommerce.store.factory.PaymentSimpleFactory;
 import com.ecommerce.store.repository.AddressRepository;
 import com.ecommerce.store.repository.ClientRepository;
 import com.ecommerce.store.repository.OrderItemRepository;
@@ -28,8 +28,10 @@ public class OrderService {
 	@Autowired
 	private OrderRepository orderRepository;
 	
+	
 	@Autowired
 	private TicketService ticketService;
+	
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
@@ -78,14 +80,13 @@ public class OrderService {
 			item.setOrder(obj);
 		}
 		
-		if(orderDTO.getPayment() instanceof PaymentWithTicket) {
-			PaymentWithTicket payment = (PaymentWithTicket) orderDTO.getPayment();
-			ticketService.fillTicket(payment, obj.getDate());
-			orderDTO.setPayment(payment);
-		}
+		PaymentSimpleFactory factory = new PaymentSimpleFactory();
+		factory.setTicketService(ticketService);
 		
-		obj.setPayment(orderDTO.getPayment());
-		obj.getPayment().setStatus(PaymentStatus.PENDING);
+		Payment payment = factory.createPayment(orderDTO.getType(), orderDTO.getInstallments());
+		
+		obj.setPayment(payment);
+		
 		obj = orderRepository.save(obj);
 		
 		orderItemRepository.saveAll(obj.getItens());
