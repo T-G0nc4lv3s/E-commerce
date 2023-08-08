@@ -1,9 +1,10 @@
 package com.ecommerce.store.controller;
 
 import java.net.URI;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,9 +35,10 @@ public class ProductController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<ProductDTO>> findAll(){
-		List<ProductDTO> response = productService.findAll();
-		return ResponseEntity.ok(response);
+	public ResponseEntity<Page<ProductDTO>> findAllPaged(Pageable pageable){
+		
+		Page<ProductDTO> page = productService.findAllPaged(pageable);
+		return ResponseEntity.ok(page);
 	}
 	
 	@PostMapping

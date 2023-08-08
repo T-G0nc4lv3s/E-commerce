@@ -2,6 +2,8 @@ package com.ecommerce.store.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -37,5 +39,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 			+"JOIN FETCH prod.categories "
 			+"WHERE prod.id = :productId")
 	public Product findByProductId(Long productId);
+
+	@Query(value = "SELECT prod "
+			+ "FROM Product prod "
+			+ "JOIN FETCH prod.categories")
+	public Page<Product> findAllPaged(Pageable pageable);
 	
 }
