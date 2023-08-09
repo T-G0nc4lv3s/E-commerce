@@ -41,7 +41,7 @@ public class ProductController {
 			@RequestParam(value = "name", defaultValue = "") String name
 			){
 		
-		Page<ProductDTO> page = productService.findAllPaged(pageable, categoryId, name);
+		Page<ProductDTO> page = productService.findAllPaged(pageable, categoryId, name.trim());
 		return ResponseEntity.ok(page);
 	}
 	
