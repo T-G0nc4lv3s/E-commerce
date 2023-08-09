@@ -2,7 +2,6 @@ package com.ecommerce.store.service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,13 +27,6 @@ public class ProductService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
-	
-	@Transactional(readOnly = true)
-	public List<ProductDTO> findAll(){
-		List<Product> result = productRepository.findAllProducts();
-		return result.stream().map(item -> new ProductDTO(item, item.getCategories()))
-				.collect(Collectors.toList());
-	}
 	
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long productId) {
@@ -80,10 +72,10 @@ public class ProductService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<ProductDTO> findAllPaged(Pageable pageable, Long categoryId) {
+	public Page<ProductDTO> findAllPaged(Pageable pageable, Long categoryId, String name) {
 		List<Category> cats = (categoryId == 0) ? null : Arrays.asList(categoryRepository.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category not found")));
-		Page<Product> page = productRepository.searchProduct(pageable, cats);
+		Page<Product> page = productRepository.searchProduct(pageable, cats, name);
 		return page.map(x -> new ProductDTO(x));
 	}
 	

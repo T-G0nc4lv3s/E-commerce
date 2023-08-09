@@ -11,29 +11,6 @@ import com.ecommerce.store.domain.Category;
 import com.ecommerce.store.domain.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-
-	/*
-	@Query(nativeQuery = true,
-			value = "SELECT DISTINCT * "
-					+ "FROM TB_PRODUCT "
-					+ "INNER JOIN tb_product_category ON tb_product.id = tb_product_category.product_id "
-					+ "INNER JOIN tb_category ON tb_category.id = tb_product_category.category_id "
-					)
-	public List<ProductMinprojection> findAllProducts();
-	*/
-	
-	@Query("SELECT DISTINCT prod "
-			+"FROM Product prod "
-			+"JOIN FETCH prod.categories")
-	public List<Product> findAllProducts();
-	
-	/*
-	@Query(nativeQuery = true,
-			value = "SELECT * "
-					+ "FROM TB_PRODUCT "
-					+ "WHERE tb_product.id = :productId")
-	public ProductMinprojection findByProductId(Long productId);
-	*/
 	
 	@Query("SELECT prod "
 			+"FROM Product prod "
@@ -41,15 +18,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 			+"WHERE prod.id = :productId")
 	public Product findByProductId(Long productId);
 
-	@Query(value = "SELECT prod "
-			+ "FROM Product prod "
-			+ "JOIN FETCH prod.categories")
-	public Page<Product> findAllPaged(Pageable pageable);
 
 	@Query(value = "SELECT prod "
 			+ "FROM Product prod "
 			+ "INNER JOIN prod.categories cats "
-			+ "WHERE (:categories IS NULL OR cats IN :categories)")
-	public Page<Product> searchProduct(Pageable pageable, List<Category> categories);
+			+ "WHERE (:categories IS NULL OR cats IN :categories) AND "
+			+ "(LOWER(prod.name) LIKE LOWER(CONCAT('%', :name, '%')))")
+	public Page<Product> searchProduct(Pageable pageable, List<Category> categories, String name);
 	
 }
