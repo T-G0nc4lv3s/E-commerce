@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.ecommerce.store.domain.Category;
 import com.ecommerce.store.domain.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -44,5 +45,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 			+ "FROM Product prod "
 			+ "JOIN FETCH prod.categories")
 	public Page<Product> findAllPaged(Pageable pageable);
+
+	@Query(value = "SELECT prod "
+			+ "FROM Product prod "
+			+ "INNER JOIN prod.categories cats "
+			+ "WHERE (:categories IS NULL OR cats IN :categories)")
+	public Page<Product> searchProduct(Pageable pageable, List<Category> categories);
 	
 }

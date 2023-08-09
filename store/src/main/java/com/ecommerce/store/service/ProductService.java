@@ -1,5 +1,6 @@
 package com.ecommerce.store.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ecommerce.store.domain.Category;
 import com.ecommerce.store.domain.Product;
 import com.ecommerce.store.dto.ProductDTO;
 import com.ecommerce.store.dto.ProductMinDTO;
+import com.ecommerce.store.repository.CategoryRepository;
 import com.ecommerce.store.repository.ProductRepository;
 import com.ecommerce.store.service.exception.ResourceNotFoundException;
 import com.ecommerce.store.util.Formatter;
@@ -22,6 +25,9 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 	
 	@Transactional(readOnly = true)
 	public List<ProductDTO> findAll(){
@@ -74,8 +80,10 @@ public class ProductService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<ProductDTO> findAllPaged(Pageable pageable) {
-		Page<Product> page = productRepository.findAll(pageable);
+	public Page<ProductDTO> findAllPaged(Pageable pageable, Long categoryId) {
+		List<Category> cats = (categoryId == 0) ? null : Arrays.asList(categoryRepository.findById(categoryId)
+				.orElseThrow(() -> new ResourceNotFoundException("Category not found")));
+		Page<Product> page = productRepository.searchProduct(pageable, cats);
 		return page.map(x -> new ProductDTO(x));
 	}
 	
