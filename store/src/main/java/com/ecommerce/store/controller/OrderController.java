@@ -16,6 +16,8 @@ import com.ecommerce.store.domain.Order;
 import com.ecommerce.store.dto.OrderDTO;
 import com.ecommerce.store.service.OrderService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderController {
@@ -30,7 +32,7 @@ public class OrderController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Order> insertCategory(@RequestBody OrderDTO orderDTO){
+	public ResponseEntity<Order> insertOrder(@RequestBody @Valid OrderDTO orderDTO){
 		Order result = orderService.insertOrder(orderDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("{/categoryId}").buildAndExpand(result.getId()).toUri();

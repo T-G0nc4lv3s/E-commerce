@@ -5,6 +5,8 @@ import java.util.Set;
 
 import com.ecommerce.store.domain.OrderItem;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,9 +14,16 @@ import lombok.NoArgsConstructor;
 @Getter
 public class OrderDTO {
 
+	@NotBlank(message = "Required field")
 	private String clientId;
+	
+	@NotBlank(message = "Required field")
 	private String addressId;
+	
+	@NotBlank(message = "Required field")
 	private String type;
+	
+	@Positive
 	private Integer installments;
 	
 	private Set<OrderItem> itens = new HashSet<>();

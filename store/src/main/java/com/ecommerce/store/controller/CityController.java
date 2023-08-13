@@ -19,6 +19,8 @@ import com.ecommerce.store.dto.CityDTO;
 import com.ecommerce.store.dto.CityMinDTO;
 import com.ecommerce.store.service.CityService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/cities")
 public class CityController {
@@ -47,7 +49,7 @@ public class CityController {
 	}
 	
 	@PutMapping(value = "/{cityId}")
-	public ResponseEntity<CityMinDTO> updateCity(@PathVariable Long cityId, @RequestBody CityDTO dto){
+	public ResponseEntity<CityMinDTO> updateCity(@PathVariable Long cityId, @RequestBody @Valid CityDTO dto){
 		CityMinDTO response = cityService.updateCity(cityId, dto);
 		return ResponseEntity.ok(response);
 	}

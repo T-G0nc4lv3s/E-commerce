@@ -21,6 +21,8 @@ import com.ecommerce.store.dto.ProductDTO;
 import com.ecommerce.store.dto.ProductMinDTO;
 import com.ecommerce.store.service.ProductService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/products")
 public class ProductController {
@@ -46,7 +48,7 @@ public class ProductController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProductDTO> insertProduct(@RequestBody ProductDTO dto){
+	public ResponseEntity<ProductDTO> insertProduct(@RequestBody @Valid ProductDTO dto){
 		ProductDTO response = productService.saveProduct(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{productId}").buildAndExpand(response.getId()).toUri();
@@ -60,7 +62,7 @@ public class ProductController {
 	}
 	
 	@PutMapping(value = "/{productId}")
-	public ResponseEntity<ProductMinDTO> updateProduct(@PathVariable Long productId, @RequestBody ProductDTO dto){
+	public ResponseEntity<ProductMinDTO> updateProduct(@PathVariable Long productId, @RequestBody @Valid ProductDTO dto){
 		ProductMinDTO response = productService.updateProduct(productId, dto);
 		return ResponseEntity.ok(response);
 	}

@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.ecommerce.store.domain.Category;
 import com.ecommerce.store.domain.Product;
 import com.ecommerce.store.projections.ProductMinprojection;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
@@ -20,7 +24,12 @@ public class ProductDTO {
 
 	@Include
 	private Long id;
+	
+	@NotBlank(message = "Required field")
+	@Length(min = 5, max = 80, message = "Length should be between 5 to 80")
 	private String name;
+	
+	@Positive(message = "Price should be positive value")
 	private Double price;
 	
 	private List<CategoryDTO> categories = new ArrayList<>();

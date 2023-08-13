@@ -20,6 +20,8 @@ import com.ecommerce.store.dto.ClientMinDTO;
 import com.ecommerce.store.dto.ClientUpdateDTO;
 import com.ecommerce.store.service.ClientService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/clients")
 public class ClientController {
@@ -41,7 +43,7 @@ public class ClientController {
 
 	
 	@PostMapping
-	public ResponseEntity<ClientMinDTO> insertClient(@RequestBody ClientInsertDTO clientDTO){
+	public ResponseEntity<ClientMinDTO> insertClient(@RequestBody @Valid ClientInsertDTO clientDTO){
 		ClientMinDTO response = clientService.insertNewClient(clientDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("{/clientId}").buildAndExpand(response.getId()).toUri();
@@ -49,7 +51,7 @@ public class ClientController {
 	}
 	
 	@PutMapping(value = "/{clientId}")
-	public ResponseEntity<ClientMinDTO> updateClient(@PathVariable Long clientId, @RequestBody ClientUpdateDTO clientUpdateDTO){
+	public ResponseEntity<ClientMinDTO> updateClient(@PathVariable Long clientId, @RequestBody @Valid ClientUpdateDTO clientUpdateDTO){
 		ClientMinDTO response = clientService.updateClient(clientId, clientUpdateDTO);
 		return ResponseEntity.ok(response);
 	}

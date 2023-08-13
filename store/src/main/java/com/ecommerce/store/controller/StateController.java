@@ -18,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ecommerce.store.dto.StateDTO;
 import com.ecommerce.store.service.StateService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/states")
 public class StateController {
@@ -38,7 +40,7 @@ public class StateController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<StateDTO> insertState(@RequestBody StateDTO dto){
+	public ResponseEntity<StateDTO> insertState(@RequestBody @Valid StateDTO dto){
 		StateDTO response = stateService.insertState(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{stateId}").buildAndExpand(response.getId()).toUri();
@@ -52,7 +54,7 @@ public class StateController {
 	}
 	
 	@PutMapping(value = "/{stateId}")
-	public ResponseEntity<StateDTO> updateState(@PathVariable Long stateId, @RequestBody StateDTO dto){
+	public ResponseEntity<StateDTO> updateState(@PathVariable Long stateId, @RequestBody @Valid StateDTO dto){
 		StateDTO response = stateService.updateState(stateId, dto);
 		return ResponseEntity.ok(response);
 	}

@@ -18,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ecommerce.store.dto.AddressDTO;
 import com.ecommerce.store.service.AddressService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/addresses")
 public class AddressController {
@@ -38,7 +40,7 @@ public class AddressController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<AddressDTO> insertAddress(@RequestBody AddressDTO dto){
+	public ResponseEntity<AddressDTO> insertAddress(@RequestBody @Valid AddressDTO dto){
 		AddressDTO response = addressService.insertAddress(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("{/addressId}").buildAndExpand(response.getId()).toUri();
@@ -46,7 +48,7 @@ public class AddressController {
 	}
 	
 	@PutMapping(value = "/{addressId}")
-	public ResponseEntity<AddressDTO> updateAddress(@PathVariable Long addressId, @RequestBody AddressDTO dto){
+	public ResponseEntity<AddressDTO> updateAddress(@PathVariable Long addressId, @RequestBody @Valid AddressDTO dto){
 		AddressDTO response = addressService.updateAddress(addressId, dto);
 		return ResponseEntity.ok(response);
 	}

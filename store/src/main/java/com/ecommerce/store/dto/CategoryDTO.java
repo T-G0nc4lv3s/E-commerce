@@ -5,7 +5,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.ecommerce.store.domain.Category;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class CategoryDTO {
 
 	private Long id;
-	@NotEmpty(message = "Required field")
+	@NotBlank(message = "Required field")
 	@Length(min = 5, max = 80, message = "Length should be between 5 to 80")
 	private String name;
 	
